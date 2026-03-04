@@ -1,0 +1,17 @@
+# Dockerfile for Python AI Worker
+
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the worker code and dependent modules
+COPY worker/ ./worker/
+COPY models/ ./models/
+COPY config/ ./config/
+
+EXPOSE 8000
+
+CMD ["uvicorn", "worker.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -18,7 +18,8 @@ app.get('/health', (req, res) => {
 // Route to AI Worker (Text Chat)
 app.post('/api/chat', async (req, res) => {
   try {
-    const response = await axios.post(`${WORKER_URL}/api/chat`, req.body);
+    // Add trailing slash because FastAPI redirects POST /api/chat -> GET /api/chat/ (Method Not Allowed)
+    const response = await axios.post(`${WORKER_URL}/api/chat/`, req.body);
     res.json(response.data);
   } catch (error) {
     console.error('Error forwarding to worker:', error.message);

@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/autopromote-cc6d3/thulani-repo/api:latest', '-f', 'docker/Dockerfile.api', '.']
+images:
+- 'us-central1-docker.pkg.dev/autopromote-cc6d3/thulani-repo/api:latest'

@@ -1,0 +1,8 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/autopromote-cc6d3/thulani-repo/frontend:latest', '--build-arg', 'NEXT_PUBLIC_HUGGINGFACE_API_KEY=${_HUGGINGFACE_API_KEY}', '-f', 'docker/Dockerfile.frontend', '.']
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'thulani-frontend', '--image', 'us-central1-docker.pkg.dev/autopromote-cc6d3/thulani-repo/frontend:latest', '--region', 'us-central1', '--allow-unauthenticated']
+images:
+- 'us-central1-docker.pkg.dev/autopromote-cc6d3/thulani-repo/frontend:latest'

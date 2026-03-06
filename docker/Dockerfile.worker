@@ -1,10 +1,17 @@
 # Dockerfile for Python AI Worker
 
-FROM python:3.9-slim
+FROM python:3.11-slim
+
+# Install system dependencies (curl for installing Ollama)
+RUN apt-get update && apt-get install -y curl zstd dos2unix && rm -rf /var/lib/apt/lists/*
+
+# Install Ollama
+RUN curl -fsSL https://ollama.com/install.sh | sh
 
 WORKDIR /app
 
 COPY requirements.txt .
+RUN pip install --no-cache-dir groq fastapi uvicorn requests python-multipart pydantic pydantic-settings
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the worker code and dependent modules
@@ -12,6 +19,6 @@ COPY worker/ ./worker/
 COPY models/ ./models/
 COPY config/ ./config/
 
-EXPOSE 8000
+EXPOSE 8080
 
-CMD ["uvicorn", "worker.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "worker.main:app", "--host", "0.0.0.0", "--port", "8080"]
